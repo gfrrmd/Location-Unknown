@@ -13,12 +13,25 @@ const ctx         = canvas.getContext('2d');
 
 const quotes = [
   "I wondered if you would notice the quiet.",
-  "I disappeared before I could say I was disappointed.",
-  "Maybe this is what distance feels like when only one person is trying.",
-  "I am not asking you to chase me. I just wanted to know if you would look.",
-  "Somewhere between missing you and missing who we were, I lost my way.",
-  "If you ever wondered where I went \u2014 I was waiting to feel wanted without having to ask.",
-  "I left the room quietly. I was tired of feeling alone in it with you."
+  "I stopped reaching out. Not because I stopped caring, but because I was tired of being the only one who did.",
+  "You never asked where I went. That told me everything.",
+  "I kept showing up. Eventually I had to ask myself why.",
+  "It is strange to miss someone who is still here.",
+  "I did not leave to make you chase me. I left because standing still was hurting me.",
+  "Maybe I was always a background character in a story you never thought to tell.",
+  "I got so used to being an option that I forgot I deserved to be a priority.",
+  "The silence between us was not peaceful. It was just what was left.",
+  "I think what hurt most was how easy it seemed for you.",
+  "I kept my distance so you would not see how much yours affected me.",
+  "I smiled through most of it. No one noticed that either.",
+  "I am not angry. I am just quietly done.",
+  "You were comfortable. I confused comfortable for chosen.",
+  "There is a version of me that waited too long. I am trying not to be her anymore.",
+  "I gave you soft words when I should have given myself an exit.",
+  "I think I loved the idea of us more than you ever did.",
+  "I disappeared before you could confirm what I already suspected.",
+  "Location unknown. Even to myself, most days.",
+  "I am somewhere between healing and still checking if you noticed I am gone."
 ];
 
 let idx        = 0;
@@ -26,9 +39,8 @@ let sweep      = 0;
 let sweepSpeed = 0.03;
 let scanning   = true;
 let toastTimer;
-let booted     = false;   // guard: boot hanya jalan sekali
+let booted     = false;
 
-// ─ Toast
 function showToast(msg) {
   clearTimeout(toastTimer);
   toast.textContent = msg;
@@ -36,7 +48,6 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
-// ─ Music status
 function updateMusicStatus() {
   if (music.paused) {
     musicStatus.textContent = '\u266A OFF';
@@ -49,26 +60,20 @@ function updateMusicStatus() {
 music.addEventListener('play',  updateMusicStatus);
 music.addEventListener('pause', updateMusicStatus);
 
-// ─ BOOT — cukup 'click', sudah fire dari tap di Android/iOS
 bootScreen.addEventListener('click', boot);
 
 function boot() {
-  if (booted) return;   // cegah dobel
+  if (booted) return;
   booted = true;
-
   bootScreen.classList.add('hiding');
   setTimeout(() => { bootScreen.style.display = 'none'; }, 620);
-
   device.classList.add('on');
   led.classList.add('on');
-
   music.volume = 0.6;
   music.play().then(updateMusicStatus).catch(() => {});
-
   startRuntime();
 }
 
-// ─ Radar
 function resizeCanvas() {
   const size = Math.min(200, Math.floor(window.innerWidth * 0.55));
   canvas.width  = size;
@@ -125,13 +130,11 @@ function drawRadar() {
   requestAnimationFrame(drawRadar);
 }
 
-// ─ Clock
 function tick() {
   const d = new Date(), p = v => String(v).padStart(2,'0');
   clockEl.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
 }
 
-// ─ Coordinates
 function updateCoord() {
   if (!scanning) return;
   const lat = (Math.random()*180-90).toFixed(4);
@@ -139,7 +142,6 @@ function updateCoord() {
   coordEl.textContent = `LAT ${lat} / LNG ${lng}`;
 }
 
-// ─ Quotes
 function showQuote(dir) {
   if (dir !== 0) idx = (idx + dir + quotes.length) % quotes.length;
   quoteEl.classList.remove('show');
@@ -149,7 +151,6 @@ function showQuote(dir) {
   }, 500);
 }
 
-// ─ Start semua runtime setelah boot
 function startRuntime() {
   drawRadar();
   setInterval(tick, 1000); tick();
@@ -158,7 +159,6 @@ function startRuntime() {
   setInterval(() => showQuote(1), 7000);
 }
 
-// ─ Buttons
 document.getElementById('dpUp').addEventListener('click',    () => { showQuote(-1); showToast('PREV SIGNAL'); });
 document.getElementById('dpDown').addEventListener('click',  () => { showQuote(1);  showToast('NEXT SIGNAL'); });
 document.getElementById('dpLeft').addEventListener('click',  () => {
