@@ -1,3 +1,11 @@
+const quoteEl    = document.getElementById('quote');
+const music      = document.getElementById('music');
+const coordEl    = document.getElementById('coord');
+const clockEl    = document.getElementById('clock');
+const radarLabel = document.getElementById('radarLabel');
+const canvas     = document.getElementById('radar');
+const ctx        = canvas.getContext('2d');
+
 const quotes = [
   "I wondered if you would notice the quiet.",
   "I disappeared before I could say I was disappointed.",
@@ -8,117 +16,103 @@ const quotes = [
   "I left the room quietly. I was tired of feeling alone in it with you."
 ];
 
-const quoteEl = document.getElementById('quote');
-const music   = document.getElementById('music');
-const coordEl = document.getElementById('coord');
-const clockEl = document.getElementById('clock');
-let   idx     = 0;
+let idx   = 0;
+let sweep = 0;
 
-// ── Clock ───────────────────────────────────────────
-function updateClock() {
-  const n = new Date();
-  const pad = v => String(v).padStart(2,'0');
-  clockEl.textContent = `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
+// ── Radar setup ─────────────────────────────────────────────
+function resizeCanvas() {
+  const size = Math.min(canvas.parentElement.clientWidth, 200);
+  canvas.width  = size;
+  canvas.height = size;
 }
-setInterval(updateClock, 1000);
-updateClock();
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
-// ── Coordinates ─────────────────────────────────────
-function updateCoord() {
-  const lat = (Math.random()*180-90).toFixed(4);
-  const lng = (Math.random()*360-180).toFixed(4);
-  coordEl.textContent = `LAT ${lat} / LNG ${lng}`;
-}
-setInterval(updateCoord, 2200);
-
-// ── Radar canvas ────────────────────────────────────
-const canvas = document.getElementById('radar');
-const ctx    = canvas.getContext('2d');
-const W = canvas.width, H = canvas.height;
-const cx = W/2, cy = H/2, R = W/2 - 4;
-let   sweep = 0;
-const dots  = [];
-
-// generate random blips
-for (let i = 0; i < 5; i++) {
-  const angle = Math.random() * Math.PI * 2;
-  const dist  = Math.random() * R * .82;
-  dots.push({ x: cx + Math.cos(angle)*dist, y: cy + Math.sin(angle)*dist, alpha: 0 });
-}
+// fixed blip positions (normalized 0-1)
+const blips = [
+  { nx: .62, ny: .28 },
+  { nx: .38, ny: .72 },
+  { nx: .74, ny: .61 },
+  { nx: .22, ny: .44 },
+  { nx: .55, ny: .55 },
+].map(b => ({ ...b, alpha: 0 }));
 
 function drawRadar() {
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2, R = W / 2 - 3;
+
   ctx.clearRect(0, 0, W, H);
 
-  // bg
-  ctx.fillStyle = '#061008';
-  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI*2); ctx.fill();
+  // background
+  ctx.fillStyle = '#050f07';
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
 
-  // grid rings
+  // rings
   [.33, .66, 1].forEach(f => {
-    ctx.beginPath();
-    ctx.arc(cx, cy, R*f, 0, Math.PI*2);
-    ctx.strokeStyle = 'rgba(57,255,138,.12)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(61,255,143,.13)'; ctx.lineWidth = 1; ctx.stroke();
   });
 
   // crosshairs
-  ctx.strokeStyle = 'rgba(57,255,138,.12)';
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(cx-R, cy); ctx.lineTo(cx+R, cy); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cx, cy-R); ctx.lineTo(cx, cy+R); ctx.stroke();
+  ctx.strokeStyle = 'rgba(61,255,143,.13)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R); ctx.stroke();
 
   // sweep trail
-  const trail = ctx.createConicalGradient
-    ? null : null; // fallback below
-  for (let t = 0; t < 60; t++) {
-    const a = sweep - (t * Math.PI/180);
-    const alpha = (1 - t/60) * 0.22;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, R, a, a + Math.PI/180);
-    ctx.closePath();
-    ctx.fillStyle = `rgba(57,255,138,${alpha})`;
+  for (let t = 0; t < 55; t++) {
+    const a = sweep - t * (Math.PI / 180);
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, R, a, a + Math.PI / 180); ctx.closePath();
+    ctx.fillStyle = `rgba(61,255,143,${(1 - t / 55) * 0.2})`;
     ctx.fill();
   }
 
   // sweep line
   ctx.beginPath();
   ctx.moveTo(cx, cy);
-  ctx.lineTo(cx + Math.cos(sweep)*R, cy + Math.sin(sweep)*R);
-  ctx.strokeStyle = 'rgba(57,255,138,.9)';
-  ctx.lineWidth = 1.5;
-  ctx.stroke();
+  ctx.lineTo(cx + Math.cos(sweep) * R, cy + Math.sin(sweep) * R);
+  ctx.strokeStyle = 'rgba(61,255,143,.85)'; ctx.lineWidth = 1.5; ctx.stroke();
 
-  // blips — light up when sweep passes near
-  dots.forEach(d => {
-    const angle = Math.atan2(d.y - cy, d.x - cx);
-    const diff  = ((sweep - angle) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
-    if (diff < 0.15) d.alpha = 1;
-    else d.alpha = Math.max(0, d.alpha - 0.012);
-
-    if (d.alpha > 0) {
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, 3, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(57,255,138,${d.alpha})`;
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, 6, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(57,255,138,${d.alpha * .25})`;
-      ctx.fill();
+  // blips
+  blips.forEach(b => {
+    const bx = b.nx * W, by = b.ny * H;
+    const angle = Math.atan2(by - cy, bx - cx);
+    const diff  = ((sweep - angle) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
+    if (diff < 0.12) b.alpha = 1;
+    else b.alpha = Math.max(0, b.alpha - 0.013);
+    if (b.alpha > 0) {
+      ctx.beginPath(); ctx.arc(bx, by, 3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(61,255,143,${b.alpha})`; ctx.fill();
+      ctx.beginPath(); ctx.arc(bx, by, 7, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(61,255,143,${b.alpha * .2})`; ctx.fill();
     }
   });
 
-  // center dot
-  ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI*2);
-  ctx.fillStyle = '#39ff8a'; ctx.fill();
+  // center
+  ctx.beginPath(); ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#3dff8f'; ctx.fill();
 
   sweep += 0.03;
   requestAnimationFrame(drawRadar);
 }
 drawRadar();
 
-// ── Quotes ──────────────────────────────────────────
+// ── Clock ────────────────────────────────────────────────────
+function tick() {
+  const d = new Date(), p = v => String(v).padStart(2, '0');
+  clockEl.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
+setInterval(tick, 1000); tick();
+
+// ── Coordinates ──────────────────────────────────────────────
+function updateCoord() {
+  const lat = (Math.random() * 180 - 90).toFixed(4);
+  const lng = (Math.random() * 360 - 180).toFixed(4);
+  coordEl.textContent = `LAT ${lat} / LNG ${lng}`;
+}
+setInterval(updateCoord, 2400);
+
+// ── Quotes ───────────────────────────────────────────────────
 function showQuote() {
   quoteEl.classList.remove('show');
   setTimeout(() => {
@@ -130,7 +124,7 @@ function showQuote() {
 showQuote();
 setInterval(showQuote, 7000);
 
-// ── Autoplay ─────────────────────────────────────────
+// ── Autoplay ─────────────────────────────────────────────────
 function tryPlay() {
   music.volume = 0.6;
   music.play().catch(() => {});
@@ -140,12 +134,12 @@ document.addEventListener('click',      tryPlay, { once: true });
 document.addEventListener('touchstart', tryPlay, { once: true });
 document.addEventListener('keydown',    tryPlay, { once: true });
 
-// ── Button interactions ──────────────────────────────
-document.getElementById('btnA').addEventListener('click', () => { showQuote(); });
+// ── Buttons ──────────────────────────────────────────────────
+document.getElementById('btnA').addEventListener('click', showQuote);
 document.getElementById('btnB').addEventListener('click', () => {
-  music.paused ? music.play() : music.pause();
+  music.paused ? music.play().catch(() => {}) : music.pause();
 });
 document.getElementById('btnStart').addEventListener('click', () => {
-  document.querySelector('.radar-label').textContent =
-    document.querySelector('.radar-label').textContent === 'SIGNAL LOST' ? 'CONNECTING...' : 'SIGNAL LOST';
+  const l = radarLabel;
+  l.textContent = l.textContent === 'SIGNAL LOST' ? 'CONNECTING...' : 'SIGNAL LOST';
 });

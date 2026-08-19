@@ -10,85 +10,82 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="room">
-    <div class="device">
 
-      <!-- top strip -->
-      <div class="device-top">
-        <div class="led" id="led"></div>
-        <span class="device-brand">ALG-01</span>
-        <div class="speaker-holes">
-          <span></span><span></span><span></span><span></span><span></span>
+  <div class="device">
+
+    <!-- top strip -->
+    <div class="device-top">
+      <div class="led" id="led"></div>
+      <span class="device-brand">ALG-01</span>
+      <div class="speaker-holes">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- screen bezel -->
+    <div class="bezel">
+      <div class="screen">
+
+        <div class="scr-header">
+          <span class="blink">&#9632; SCANNING</span>
+          <span id="coord">LAT ---.---- / LNG ---.----</span>
         </div>
+
+        <div class="radar-wrap">
+          <canvas id="radar"></canvas>
+          <div class="radar-label" id="radarLabel">SIGNAL LOST</div>
+        </div>
+
+        <div class="quote-area">
+          <span class="cur blink">&#9612;</span>
+          <p id="quote"></p>
+        </div>
+
+        <div class="scr-footer">
+          <span>LOCATION UNKNOWN</span>
+          <span id="clock">00:00:00</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- controls -->
+    <div class="controls">
+
+      <div class="dpad">
+        <div class="dp-row"><button class="dp">&#9650;</button></div>
+        <div class="dp-row dp-mid">
+          <button class="dp">&#9664;</button>
+          <div class="dp-center"></div>
+          <button class="dp">&#9654;</button>
+        </div>
+        <div class="dp-row"><button class="dp">&#9660;</button></div>
       </div>
 
-      <!-- screen bezel -->
-      <div class="bezel">
-        <div class="screen">
-
-          <!-- screen header -->
-          <div class="scr-header">
-            <span class="scr-label blink">&#9632; SCANNING</span>
-            <span class="scr-coord" id="coord">LAT ---.---- / LNG ---.----</span>
-          </div>
-
-          <!-- radar -->
-          <div class="radar-wrap">
-            <canvas id="radar" width="220" height="220"></canvas>
-            <div class="radar-label">SIGNAL LOST</div>
-          </div>
-
-          <!-- quote -->
-          <div class="quote-area">
-            <div class="quote-cursor">&#9612;</div>
-            <p id="quote"></p>
-          </div>
-
-          <!-- screen footer -->
-          <div class="scr-footer">
-            <span>LOCATION UNKNOWN</span>
-            <span id="clock">00:00:00</span>
-          </div>
-
-        </div>
+      <div class="mid-btns">
+        <button class="btn-sm">SELECT</button>
+        <div class="nub"></div>
+        <button class="btn-sm" id="btnStart">START</button>
       </div>
 
-      <!-- controls row -->
-      <div class="controls">
-        <div class="dpad">
-          <div class="dp-row"><button class="dp dp-up">&#9650;</button></div>
-          <div class="dp-row mid">
-            <button class="dp dp-left">&#9664;</button>
-            <div class="dp-center"></div>
-            <button class="dp dp-right">&#9654;</button>
-          </div>
-          <div class="dp-row"><button class="dp dp-down">&#9660;</button></div>
+      <div class="abxy">
+        <div class="ab-row"><button class="ab" id="btnY">Y</button></div>
+        <div class="ab-row ab-mid">
+          <button class="ab" id="btnX">X</button>
+          <button class="ab" id="btnA">A</button>
         </div>
-
-        <div class="center-btns">
-          <button class="btn-small" id="btnMenu">SELECT</button>
-          <div class="analog-nub"></div>
-          <button class="btn-small" id="btnStart">START</button>
-        </div>
-
-        <div class="abxy">
-          <div class="abxy-row"><button class="ab" id="btnY">Y</button></div>
-          <div class="abxy-row mid">
-            <button class="ab" id="btnX">X</button>
-            <button class="ab" id="btnA">A</button>
-          </div>
-          <div class="abxy-row"><button class="ab" id="btnB">B</button></div>
-        </div>
-      </div>
-
-      <!-- bottom strip -->
-      <div class="device-bottom">
-        <div class="bottom-port">&#9135;</div>
-        <span class="bottom-text">LOCATION-UNKNOWN &copy; 2026</span>
-        <div class="bottom-port">&#9135;</div>
+        <div class="ab-row"><button class="ab" id="btnB">B</button></div>
       </div>
 
     </div>
+
+    <!-- bottom -->
+    <div class="device-bottom">
+      <span class="port">&#9135;</span>
+      <span class="btm-text">LOCATION-UNKNOWN &copy; 2026</span>
+      <span class="port">&#9135;</span>
+    </div>
+
   </div>
 
   <audio id="music" src="location-unknown.mp3" loop preload="auto"></audio>
