@@ -1,13 +1,15 @@
-const quoteEl    = document.getElementById('quote');
-const music      = document.getElementById('music');
-const coordEl    = document.getElementById('coord');
-const clockEl    = document.getElementById('clock');
-const radarLabel = document.getElementById('radarLabel');
-const canvas     = document.getElementById('radar');
-const toast      = document.getElementById('toast');
+const quoteEl     = document.getElementById('quote');
+const music       = document.getElementById('music');
+const coordEl     = document.getElementById('coord');
+const clockEl     = document.getElementById('clock');
+const radarLabel  = document.getElementById('radarLabel');
+const canvas      = document.getElementById('radar');
+const toast       = document.getElementById('toast');
 const musicStatus = document.getElementById('musicStatus');
-const tapBanner  = document.getElementById('tapBanner');
-const ctx        = canvas.getContext('2d');
+const bootScreen  = document.getElementById('bootScreen');
+const device      = document.getElementById('device');
+const led         = document.getElementById('led');
+const ctx         = canvas.getContext('2d');
 
 const quotes = [
   "I wondered if you would notice the quiet.",
@@ -24,7 +26,6 @@ let sweep      = 0;
 let sweepSpeed = 0.03;
 let scanning   = true;
 let toastTimer;
-let musicUnlocked = false;
 
 // ─ Toast
 function showToast(msg) {
@@ -34,9 +35,8 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
-// ─ Music status indicator
+// ─ Music status
 function updateMusicStatus() {
-  if (!musicStatus) return;
   if (music.paused) {
     musicStatus.textContent = '\u266A OFF';
     musicStatus.style.color = '#3a4050';
@@ -45,25 +45,29 @@ function updateMusicStatus() {
     musicStatus.style.color = 'var(--g)';
   }
 }
-
-// ─ Unlock + play audio (requires user gesture)
-function unlockAudio() {
-  if (musicUnlocked) return;
-  musicUnlocked = true;
-  music.volume = 0.6;
-  music.play().then(() => {
-    if (tapBanner) tapBanner.style.display = 'none';
-    updateMusicStatus();
-  }).catch(() => {});
-}
-
-// Listen for any first interaction
-['click','touchstart','keydown'].forEach(ev => {
-  document.addEventListener(ev, unlockAudio, { once: true });
-});
-
 music.addEventListener('play',  updateMusicStatus);
 music.addEventListener('pause', updateMusicStatus);
+
+// ─ BOOT: tap boot screen → aktifkan device + play musik
+bootScreen.addEventListener('click', boot);
+bootScreen.addEventListener('touchend', e => { e.preventDefault(); boot(); }, { passive: false });
+
+function boot() {
+  // fade out boot screen
+  bootScreen.classList.add('hiding');
+  setTimeout(() => bootScreen.style.display = 'none', 620);
+
+  // nyalakan device
+  device.classList.add('on');
+  led.classList.add('on');
+
+  // play musik
+  music.volume = 0.6;
+  music.play().then(updateMusicStatus).catch(() => {});
+
+  // mulai runtime
+  startRuntime();
+}
 
 // ─ Radar
 function resizeCanvas() {
@@ -121,14 +125,12 @@ function drawRadar() {
   sweep += sweepSpeed;
   requestAnimationFrame(drawRadar);
 }
-drawRadar();
 
 // ─ Clock
 function tick() {
   const d = new Date(), p = v => String(v).padStart(2,'0');
   clockEl.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
 }
-setInterval(tick, 1000); tick();
 
 // ─ Coordinates
 function updateCoord() {
@@ -137,7 +139,6 @@ function updateCoord() {
   const lng = (Math.random()*360-180).toFixed(4);
   coordEl.textContent = `LAT ${lat} / LNG ${lng}`;
 }
-setInterval(updateCoord, 2400);
 
 // ─ Quotes
 function showQuote(dir) {
@@ -148,13 +149,20 @@ function showQuote(dir) {
     quoteEl.classList.add('show');
   }, 500);
 }
-showQuote(0);
-setInterval(() => showQuote(1), 7000);
+
+// ─ Start semua runtime setelah boot
+function startRuntime() {
+  drawRadar();
+  setInterval(tick, 1000); tick();
+  setInterval(updateCoord, 2400);
+  showQuote(0);
+  setInterval(() => showQuote(1), 7000);
+}
 
 // ─ Buttons
-document.getElementById('dpUp').addEventListener('click', () => { showQuote(-1); showToast('PREV SIGNAL'); });
-document.getElementById('dpDown').addEventListener('click', () => { showQuote(1); showToast('NEXT SIGNAL'); });
-document.getElementById('dpLeft').addEventListener('click', () => {
+document.getElementById('dpUp').addEventListener('click',    () => { showQuote(-1); showToast('PREV SIGNAL'); });
+document.getElementById('dpDown').addEventListener('click',  () => { showQuote(1);  showToast('NEXT SIGNAL'); });
+document.getElementById('dpLeft').addEventListener('click',  () => {
   music.volume = Math.max(0, parseFloat((music.volume-.1).toFixed(1)));
   showToast(`VOL ${Math.round(music.volume*10)}/10`);
 });
@@ -164,7 +172,6 @@ document.getElementById('dpRight').addEventListener('click', () => {
 });
 document.getElementById('btnA').addEventListener('click', () => { showQuote(1); showToast('NEXT SIGNAL'); });
 document.getElementById('btnB').addEventListener('click', () => {
-  unlockAudio();
   if (music.paused) {
     music.play().then(updateMusicStatus).catch(()=>{});
     showToast('\u25B6 PLAYING');
