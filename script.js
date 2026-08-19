@@ -12,6 +12,7 @@ const led         = document.getElementById('led');
 const ctx         = canvas.getContext('2d');
 
 const quotes = [
+  "I.. I Love U Mic, I'm sorry.",
   "I wondered if you would notice the quiet.",
   "I stopped reaching out. Not because I stopped caring, but because I was tired of being the only one who did.",
   "You never asked where I went. That told me everything.",
@@ -26,7 +27,7 @@ const quotes = [
   "I smiled through most of it. No one noticed that either.",
   "I am not angry. I am just quietly done.",
   "You were comfortable. I confused comfortable for chosen.",
-  "There is a version of me that waited too long. I am trying not to be her anymore.",
+  "There is a version of me that waited too long. I am trying not to be him anymore.",
   "I gave you soft words when I should have given myself an exit.",
   "I think I loved the idea of us more than you ever did.",
   "I disappeared before you could confirm what I already suspected.",
