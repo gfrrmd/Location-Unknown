@@ -26,6 +26,7 @@ let sweep      = 0;
 let sweepSpeed = 0.03;
 let scanning   = true;
 let toastTimer;
+let booted     = false;   // guard: boot hanya jalan sekali
 
 // ─ Toast
 function showToast(msg) {
@@ -48,24 +49,22 @@ function updateMusicStatus() {
 music.addEventListener('play',  updateMusicStatus);
 music.addEventListener('pause', updateMusicStatus);
 
-// ─ BOOT: tap boot screen → aktifkan device + play musik
+// ─ BOOT — cukup 'click', sudah fire dari tap di Android/iOS
 bootScreen.addEventListener('click', boot);
-bootScreen.addEventListener('touchend', e => { e.preventDefault(); boot(); }, { passive: false });
 
 function boot() {
-  // fade out boot screen
-  bootScreen.classList.add('hiding');
-  setTimeout(() => bootScreen.style.display = 'none', 620);
+  if (booted) return;   // cegah dobel
+  booted = true;
 
-  // nyalakan device
+  bootScreen.classList.add('hiding');
+  setTimeout(() => { bootScreen.style.display = 'none'; }, 620);
+
   device.classList.add('on');
   led.classList.add('on');
 
-  // play musik
   music.volume = 0.6;
   music.play().then(updateMusicStatus).catch(() => {});
 
-  // mulai runtime
   startRuntime();
 }
 
