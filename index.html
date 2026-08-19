@@ -6,49 +6,90 @@
   <title>Location Unknown</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="bg-noise"></div>
-  <div class="bg-vignette"></div>
+  <div class="room">
+    <div class="device">
 
-  <main class="page">
-    <header class="topbar">
-      <span class="topbar-left">&#8212; signal lost</span>
-      <span class="topbar-right">no fixed location</span>
-    </header>
-
-    <section class="hero">
-      <div class="title-block">
-        <h1>Location</h1>
-        <h1 class="italic">Unknown<span class="dot">.</span></h1>
+      <!-- top strip -->
+      <div class="device-top">
+        <div class="led" id="led"></div>
+        <span class="device-brand">ALG-01</span>
+        <div class="speaker-holes">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
       </div>
 
-      <p class="sub">
-        I stepped away for a while.<br>
-        Not to disappear from you &mdash;<br>
-        just to hear myself beneath all the silence.
-      </p>
+      <!-- screen bezel -->
+      <div class="bezel">
+        <div class="screen">
 
-      <div class="ping-wrap" aria-hidden="true">
-        <div class="ping-ring r1"></div>
-        <div class="ping-ring r2"></div>
-        <div class="ping-ring r3"></div>
-        <div class="ping-ring r4"></div>
-        <div class="ping-core"></div>
+          <!-- screen header -->
+          <div class="scr-header">
+            <span class="scr-label blink">&#9632; SCANNING</span>
+            <span class="scr-coord" id="coord">LAT ---.---- / LNG ---.----</span>
+          </div>
+
+          <!-- radar -->
+          <div class="radar-wrap">
+            <canvas id="radar" width="220" height="220"></canvas>
+            <div class="radar-label">SIGNAL LOST</div>
+          </div>
+
+          <!-- quote -->
+          <div class="quote-area">
+            <div class="quote-cursor">&#9612;</div>
+            <p id="quote"></p>
+          </div>
+
+          <!-- screen footer -->
+          <div class="scr-footer">
+            <span>LOCATION UNKNOWN</span>
+            <span id="clock">00:00:00</span>
+          </div>
+
+        </div>
       </div>
 
-      <p class="ping-label">locating&hellip;</p>
+      <!-- controls row -->
+      <div class="controls">
+        <div class="dpad">
+          <div class="dp-row"><button class="dp dp-up">&#9650;</button></div>
+          <div class="dp-row mid">
+            <button class="dp dp-left">&#9664;</button>
+            <div class="dp-center"></div>
+            <button class="dp dp-right">&#9654;</button>
+          </div>
+          <div class="dp-row"><button class="dp dp-down">&#9660;</button></div>
+        </div>
 
-      <blockquote id="quote"></blockquote>
-    </section>
+        <div class="center-btns">
+          <button class="btn-small" id="btnMenu">SELECT</button>
+          <div class="analog-nub"></div>
+          <button class="btn-small" id="btnStart">START</button>
+        </div>
 
-    <footer class="foot">
-      <span>if you were wondering</span>
-      <span>i was too</span>
-    </footer>
-  </main>
+        <div class="abxy">
+          <div class="abxy-row"><button class="ab" id="btnY">Y</button></div>
+          <div class="abxy-row mid">
+            <button class="ab" id="btnX">X</button>
+            <button class="ab" id="btnA">A</button>
+          </div>
+          <div class="abxy-row"><button class="ab" id="btnB">B</button></div>
+        </div>
+      </div>
+
+      <!-- bottom strip -->
+      <div class="device-bottom">
+        <div class="bottom-port">&#9135;</div>
+        <span class="bottom-text">LOCATION-UNKNOWN &copy; 2026</span>
+        <div class="bottom-port">&#9135;</div>
+      </div>
+
+    </div>
+  </div>
 
   <audio id="music" src="location-unknown.mp3" loop preload="auto"></audio>
   <script src="script.js"></script>
