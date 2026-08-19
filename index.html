@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Location Unknown</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-noise"></div>
+  <div class="bg-vignette"></div>
+
+  <main class="page">
+    <header class="topbar">
+      <span class="topbar-left">&#8212; signal lost</span>
+      <span class="topbar-right">no fixed location</span>
+    </header>
+
+    <section class="hero">
+      <div class="title-block">
+        <h1>Location</h1>
+        <h1 class="italic">Unknown<span class="dot">.</span></h1>
+      </div>
+
+      <p class="sub">
+        I stepped away for a while.<br>
+        Not to disappear from you &mdash;<br>
+        just to hear myself beneath all the silence.
+      </p>
+
+      <div class="ping-wrap" aria-hidden="true">
+        <div class="ping-ring r1"></div>
+        <div class="ping-ring r2"></div>
+        <div class="ping-ring r3"></div>
+        <div class="ping-ring r4"></div>
+        <div class="ping-core"></div>
+      </div>
+
+      <p class="ping-label">locating&hellip;</p>
+
+      <blockquote id="quote"></blockquote>
+    </section>
+
+    <footer class="foot">
+      <span>if you were wondering</span>
+      <span>i was too</span>
+    </footer>
+  </main>
+
+  <audio id="music" src="location-unknown.mp3" loop preload="auto"></audio>
+  <script src="script.js"></script>
+</body>
+</html>
