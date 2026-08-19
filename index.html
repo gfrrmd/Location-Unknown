@@ -21,6 +21,9 @@
       --red:   #ff4a4a;
       --mono:  'Share Tech Mono', monospace;
       --orb:   'Orbitron', sans-serif;
+      /* ukuran tombol responsif: 11vw tapi max 48px */
+      --btn: clamp(36px, 11vw, 48px);
+      --gap: clamp(2px, 0.8vw, 5px);
     }
 
     html, body { width: 100%; min-height: 100svh; }
@@ -47,14 +50,11 @@
       flex-direction: column;
     }
 
-    /* TOP STRIP */
+    /* TOP */
     .device-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 10px 18px 9px;
-      background: var(--edge);
-      border-bottom: 1px solid #0b0d11;
+      background: var(--edge); border-bottom: 1px solid #0b0d11;
     }
     .led {
       width: 9px; height: 9px; border-radius: 50%;
@@ -76,8 +76,7 @@
     .bezel { padding: 12px 14px 10px; background: var(--bezel); }
     .screen {
       background: var(--scr);
-      border-radius: 8px;
-      border: 2px solid #0a1c0d;
+      border-radius: 8px; border: 2px solid #0a1c0d;
       box-shadow: inset 0 0 32px rgba(0,0,0,.8), 0 0 20px rgba(61,255,143,.05);
       padding: 11px 13px 13px;
       display: flex; flex-direction: column; gap: 10px;
@@ -126,108 +125,102 @@
       border-top: 1px solid var(--gdim); padding-top: 7px;
     }
 
-    /* ===================== CONTROLS ===================== */
+    /* ══════════════ CONTROLS ══════════════ */
     .controls {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 18px 20px 16px;
+      justify-content: space-evenly;   /* merata, tidak mepet */
+      padding: 16px 10px 14px;
       background: var(--dev);
       border-top: 1px solid #14171e;
-      gap: 10px;
     }
 
-    /* --- D-PAD --- */
+    /* ── D-PAD ── */
     .dpad {
       display: grid;
-      grid-template-columns: 42px 42px 42px;
-      grid-template-rows: 42px 42px 42px;
-      gap: 3px;
+      grid-template-columns: repeat(3, var(--btn));
+      grid-template-rows: repeat(3, var(--btn));
+      gap: var(--gap);
+      flex-shrink: 0;
     }
     .dp {
-      background: #12141b;
-      border: 1px solid #252a35;
-      color: #4a5368;
-      font-size: 12px;
-      border-radius: 8px;
-      cursor: pointer;
+      background: #12141b; border: 1px solid #252a35;
+      color: #4a5368; font-size: clamp(10px, 3vw, 13px);
+      border-radius: 7px; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      padding: 0;
-      transition: background .1s, color .1s;
+      padding: 0; transition: background .1s, color .1s;
       -webkit-tap-highlight-color: transparent;
     }
     .dp:active { background: var(--gdim); color: var(--g); border-color: var(--g); }
-    .dp.dp-up    { grid-column: 2; grid-row: 1; }
-    .dp.dp-left  { grid-column: 1; grid-row: 2; }
-    .dp.dp-center{ grid-column: 2; grid-row: 2; background: #0e1015; border-radius: 50%; cursor: default; }
-    .dp.dp-right { grid-column: 3; grid-row: 2; }
-    .dp.dp-down  { grid-column: 2; grid-row: 3; }
+    .dp-up     { grid-column: 2; grid-row: 1; }
+    .dp-left   { grid-column: 1; grid-row: 2; }
+    .dp-center {
+      grid-column: 2; grid-row: 2;
+      background: #0d0f14; border-radius: 50%;
+      cursor: default; pointer-events: none;
+    }
+    .dp-right  { grid-column: 3; grid-row: 2; }
+    .dp-down   { grid-column: 2; grid-row: 3; }
 
-    /* --- MID BUTTONS --- */
+    /* ── MID ── */
     .mid-btns {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 10px;
     }
-    .mid-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
+    .mid-row { display: flex; gap: 8px; align-items: center; }
+
     .btn-pill {
-      background: #12141b;
-      border: 1px solid #252a35;
-      color: #454c5e;
-      font-family: var(--mono);
-      font-size: 8px;
+      background: #12141b; border: 1px solid #252a35;
+      color: #454c5e; font-family: var(--mono);
+      font-size: clamp(7px, 2vw, 9px);
       letter-spacing: .1em;
-      padding: 7px 12px;
-      border-radius: 20px;
+      padding: 7px 10px; border-radius: 20px;
       cursor: pointer;
-      min-width: 64px;
+      min-width: clamp(52px, 14vw, 70px);
       text-align: center;
       transition: all .15s;
       -webkit-tap-highlight-color: transparent;
     }
-    .btn-pill:active, .btn-pill.lit {
+    .btn-pill:active {
       background: var(--gdim); color: var(--g);
       border-color: var(--g); box-shadow: 0 0 10px rgba(61,255,143,.22);
     }
     .nub {
-      width: 34px; height: 34px; border-radius: 50%;
+      width: clamp(28px, 8vw, 36px);
+      height: clamp(28px, 8vw, 36px);
+      border-radius: 50%;
       background: radial-gradient(circle at 38% 38%, #282d38, #0f1115);
       border: 1px solid #252a35;
       box-shadow: inset 0 2px 5px rgba(0,0,0,.6);
     }
 
-    /* --- ABXY --- */
+    /* ── ABXY ── */
     .abxy {
       display: grid;
-      grid-template-columns: 42px 42px 42px;
-      grid-template-rows: 42px 42px 42px;
-      gap: 3px;
+      grid-template-columns: repeat(3, var(--btn));
+      grid-template-rows: repeat(3, var(--btn));
+      gap: var(--gap);
+      flex-shrink: 0;
     }
     .ab {
-      background: #12141b;
-      border: 1px solid #252a35;
-      color: #454c5e;
-      font-family: var(--orb);
-      font-size: 11px; font-weight: 600;
-      border-radius: 50%;
-      cursor: pointer; padding: 0;
+      background: #12141b; border: 1px solid #252a35;
+      color: #454c5e; font-family: var(--orb);
+      font-size: clamp(9px, 2.8vw, 12px); font-weight: 600;
+      border-radius: 50%; cursor: pointer; padding: 0;
       display: flex; align-items: center; justify-content: center;
       transition: all .12s;
       -webkit-tap-highlight-color: transparent;
     }
-    .ab:active { background: var(--gdim); color: var(--g); border-color: var(--g); box-shadow: 0 0 12px rgba(61,255,143,.3); }
+    .ab:active {
+      background: var(--gdim); color: var(--g);
+      border-color: var(--g); box-shadow: 0 0 12px rgba(61,255,143,.3);
+    }
     .ab.y { grid-column: 2; grid-row: 1; }
     .ab.x { grid-column: 1; grid-row: 2; }
     .ab.a { grid-column: 3; grid-row: 2; }
     .ab.b { grid-column: 2; grid-row: 3; }
 
-    /* BOTTOM STRIP */
+    /* BOTTOM */
     .device-bottom {
       display: flex; align-items: center; justify-content: space-between;
       padding: 8px 18px 14px;
@@ -236,23 +229,16 @@
     .port { font-size: 18px; color: #181c22; }
     .btm-text { font-size: 8px; letter-spacing: .1em; color: #22262f; font-family: var(--mono); }
 
-    /* TOAST notif */
+    /* TOAST */
     #toast {
       position: fixed;
       bottom: 28px; left: 50%; transform: translateX(-50%);
-      background: var(--gdim);
-      color: var(--g);
+      background: var(--gdim); color: var(--g);
       border: 1px solid var(--g);
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: .1em;
-      padding: 8px 18px;
-      border-radius: 20px;
-      opacity: 0;
-      transition: opacity .3s;
-      pointer-events: none;
-      z-index: 999;
-      white-space: nowrap;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .1em;
+      padding: 8px 18px; border-radius: 20px;
+      opacity: 0; transition: opacity .3s;
+      pointer-events: none; z-index: 999; white-space: nowrap;
     }
     #toast.show { opacity: 1; }
 
@@ -296,10 +282,8 @@
       </div>
     </div>
 
-    <!-- CONTROLS -->
     <div class="controls">
 
-      <!-- D-pad: navigasi quotes -->
       <div class="dpad">
         <button class="dp dp-up"    id="dpUp">&#9650;</button>
         <button class="dp dp-left"  id="dpLeft">&#9664;</button>
@@ -308,16 +292,14 @@
         <button class="dp dp-down"  id="dpDown">&#9660;</button>
       </div>
 
-      <!-- Mid -->
       <div class="mid-btns">
         <div class="mid-row">
-          <button class="btn-pill" id="btnSelect">SELECT</button>
+          <button class="btn-pill" id="btnSelect">SEL</button>
           <button class="btn-pill" id="btnStart">START</button>
         </div>
-        <div class="nub" id="nub"></div>
+        <div class="nub"></div>
       </div>
 
-      <!-- ABXY -->
       <div class="abxy">
         <button class="ab y" id="btnY">Y</button>
         <button class="ab x" id="btnX">X</button>
@@ -336,7 +318,6 @@
   </div>
 
   <div id="toast"></div>
-
   <audio id="music" src="location-unknown.mp3" loop preload="auto"></audio>
   <script src="script.js"></script>
 </body>
