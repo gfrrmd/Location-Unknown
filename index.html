@@ -21,13 +21,9 @@
       --red:   #ff4a4a;
       --mono:  'Share Tech Mono', monospace;
       --orb:   'Orbitron', sans-serif;
-      --btn:   44px;
     }
 
-    html, body {
-      width: 100%;
-      min-height: 100svh;
-    }
+    html, body { width: 100%; min-height: 100svh; }
 
     body {
       background: var(--body);
@@ -35,27 +31,23 @@
       align-items: flex-start;
       justify-content: center;
       font-family: var(--mono);
-      /* jarak sisi kiri-kanan dan atas-bawah */
       padding: 16px 14px env(safe-area-inset-bottom, 16px);
     }
 
-    /* ── Device: penuh selebar layar minus padding body ── */
     .device {
       width: 100%;
       max-width: 520px;
       background: var(--dev);
       border-radius: 22px;
       border: 2px solid #272b35;
-      box-shadow:
-        0 0 0 1px #08090b,
-        0 16px 70px rgba(0,0,0,.95),
-        inset 0 1px 0 rgba(255,255,255,.04);
+      box-shadow: 0 0 0 1px #08090b, 0 16px 70px rgba(0,0,0,.95),
+                  inset 0 1px 0 rgba(255,255,255,.04);
       overflow: hidden;
       display: flex;
       flex-direction: column;
     }
 
-    /* ── Top strip ── */
+    /* TOP STRIP */
     .device-top {
       display: flex;
       align-items: center;
@@ -64,136 +56,77 @@
       background: var(--edge);
       border-bottom: 1px solid #0b0d11;
     }
-
     .led {
       width: 9px; height: 9px; border-radius: 50%;
       background: var(--g);
       box-shadow: 0 0 8px 3px rgba(61,255,143,.5);
       animation: ledpulse 2s ease-in-out infinite;
     }
-
     .device-brand {
-      font-family: var(--orb);
-      font-size: 12px;
-      letter-spacing: .22em;
-      color: #363c4a;
+      font-family: var(--orb); font-size: 12px;
+      letter-spacing: .22em; color: #363c4a;
     }
-
     .speaker-holes { display: flex; gap: 5px; align-items: center; }
     .speaker-holes span {
-      display: block;
-      width: 3px; height: 14px; border-radius: 2px;
-      background: #1c2028;
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.7);
+      display: block; width: 3px; height: 14px; border-radius: 2px;
+      background: #1c2028; box-shadow: inset 0 1px 1px rgba(0,0,0,.7);
     }
 
-    /* ── Bezel ── */
-    .bezel {
-      padding: 12px 14px 10px;
-      background: var(--bezel);
-    }
-
-    /* ── Screen ── */
+    /* BEZEL + SCREEN */
+    .bezel { padding: 12px 14px 10px; background: var(--bezel); }
     .screen {
       background: var(--scr);
       border-radius: 8px;
       border: 2px solid #0a1c0d;
-      box-shadow:
-        inset 0 0 32px rgba(0,0,0,.8),
-        0 0 20px rgba(61,255,143,.05);
+      box-shadow: inset 0 0 32px rgba(0,0,0,.8), 0 0 20px rgba(61,255,143,.05);
       padding: 11px 13px 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; gap: 10px;
+      position: relative; overflow: hidden;
     }
-
-    /* CRT scanlines */
     .screen::after {
-      content: '';
-      position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0;
       pointer-events: none; z-index: 10;
       background: repeating-linear-gradient(
         0deg, transparent 0, transparent 3px,
         rgba(0,0,0,.13) 3px, rgba(0,0,0,.13) 4px
       );
     }
-
-    /* ── Screen header ── */
     .scr-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      color: var(--g);
-      letter-spacing: .1em;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--gdim);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: var(--g); letter-spacing: .1em;
+      padding-bottom: 8px; border-bottom: 1px solid var(--gdim);
     }
     #coord { color: #2b8a52; font-size: 9px; }
-
-    /* ── Radar ── */
-    .radar-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
+    .radar-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
     #radar {
       display: block;
-      width: min(220px, 58vw);
-      height: min(220px, 58vw);
-      border-radius: 50%;
-      border: 1px solid var(--gdim);
+      width: min(220px, 58vw); height: min(220px, 58vw);
+      border-radius: 50%; border: 1px solid var(--gdim);
     }
-
     .radar-label {
-      font-size: 10px;
-      letter-spacing: .22em;
-      color: var(--red);
+      font-size: 10px; letter-spacing: .22em; color: var(--red);
       animation: blink 1.1s step-start infinite;
     }
-
-    /* ── Quote ── */
     .quote-area {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      border-top: 1px solid var(--gdim);
-      padding-top: 9px;
-      min-height: 72px;
+      display: flex; align-items: flex-start; gap: 8px;
+      border-top: 1px solid var(--gdim); padding-top: 9px; min-height: 72px;
     }
-
     .cur {
       color: var(--g); font-size: 16px; line-height: 1.5;
-      animation: blink .75s step-start infinite;
-      flex-shrink: 0;
+      animation: blink .75s step-start infinite; flex-shrink: 0;
     }
-
     #quote {
-      font-size: 13px;
-      color: var(--g);
-      line-height: 1.7;
-      letter-spacing: .03em;
-      opacity: 0;
-      transition: opacity .55s;
+      font-size: 13px; color: var(--g); line-height: 1.7;
+      letter-spacing: .03em; opacity: 0; transition: opacity .55s;
     }
     #quote.show { opacity: 1; }
-
-    /* ── Screen footer ── */
     .scr-footer {
-      display: flex;
-      justify-content: space-between;
-      font-size: 9px;
-      color: var(--gdim);
-      letter-spacing: .1em;
-      border-top: 1px solid var(--gdim);
-      padding-top: 7px;
+      display: flex; justify-content: space-between;
+      font-size: 9px; color: var(--gdim); letter-spacing: .1em;
+      border-top: 1px solid var(--gdim); padding-top: 7px;
     }
 
-    /* ── Controls ── */
+    /* ===================== CONTROLS ===================== */
     .controls {
       display: flex;
       justify-content: space-between;
@@ -201,82 +134,128 @@
       padding: 18px 20px 16px;
       background: var(--dev);
       border-top: 1px solid #14171e;
-      gap: 12px;
+      gap: 10px;
     }
 
-    /* D-pad */
-    .dpad { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    .dp-row { display: flex; justify-content: center; }
-    .dp-mid { gap: 3px; align-items: center; }
-
+    /* --- D-PAD --- */
+    .dpad {
+      display: grid;
+      grid-template-columns: 42px 42px 42px;
+      grid-template-rows: 42px 42px 42px;
+      gap: 3px;
+    }
     .dp {
-      width: var(--btn); height: var(--btn);
-      background: #12141b; border: 1px solid #23272f;
-      color: #3a4050; font-size: 11px;
+      background: #12141b;
+      border: 1px solid #252a35;
+      color: #4a5368;
+      font-size: 12px;
+      border-radius: 8px;
+      cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; border-radius: 6px; padding: 0;
+      padding: 0;
       transition: background .1s, color .1s;
       -webkit-tap-highlight-color: transparent;
     }
-    .dp:active { background: var(--gdim); color: var(--g); }
+    .dp:active { background: var(--gdim); color: var(--g); border-color: var(--g); }
+    .dp.dp-up    { grid-column: 2; grid-row: 1; }
+    .dp.dp-left  { grid-column: 1; grid-row: 2; }
+    .dp.dp-center{ grid-column: 2; grid-row: 2; background: #0e1015; border-radius: 50%; cursor: default; }
+    .dp.dp-right { grid-column: 3; grid-row: 2; }
+    .dp.dp-down  { grid-column: 2; grid-row: 3; }
 
-    .dp-center {
-      width: var(--btn); height: var(--btn);
-      background: #12141b; border: 1px solid #23272f; border-radius: 6px;
+    /* --- MID BUTTONS --- */
+    .mid-btns {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
     }
-
-    /* Mid */
-    .mid-btns { display: flex; flex-direction: column; align-items: center; gap: 10px; flex: 1; }
-
-    .btn-sm {
-      background: #12141b; border: 1px solid #23272f;
-      color: #353a48; font-family: var(--mono); font-size: 8px;
-      letter-spacing: .1em; padding: 8px 14px; border-radius: 20px;
-      cursor: pointer; transition: all .15s; width: 80px; text-align: center;
+    .mid-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn-pill {
+      background: #12141b;
+      border: 1px solid #252a35;
+      color: #454c5e;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .1em;
+      padding: 7px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      min-width: 64px;
+      text-align: center;
+      transition: all .15s;
       -webkit-tap-highlight-color: transparent;
     }
-    .btn-sm:active {
+    .btn-pill:active, .btn-pill.lit {
       background: var(--gdim); color: var(--g);
-      border-color: var(--g); box-shadow: 0 0 10px rgba(61,255,143,.25);
+      border-color: var(--g); box-shadow: 0 0 10px rgba(61,255,143,.22);
     }
-
     .nub {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #282d38, #12141b);
-      border: 1px solid #23272f;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, #282d38, #0f1115);
+      border: 1px solid #252a35;
       box-shadow: inset 0 2px 5px rgba(0,0,0,.6);
     }
 
-    /* ABXY */
-    .abxy { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-    .ab-row { display: flex; justify-content: center; }
-    .ab-mid { gap: 3px; }
-
+    /* --- ABXY --- */
+    .abxy {
+      display: grid;
+      grid-template-columns: 42px 42px 42px;
+      grid-template-rows: 42px 42px 42px;
+      gap: 3px;
+    }
     .ab {
-      width: var(--btn); height: var(--btn); border-radius: 50%;
-      background: #12141b; border: 1px solid #23272f;
-      color: #353a48; font-family: var(--orb); font-size: 11px; font-weight: 600;
+      background: #12141b;
+      border: 1px solid #252a35;
+      color: #454c5e;
+      font-family: var(--orb);
+      font-size: 11px; font-weight: 600;
+      border-radius: 50%;
       cursor: pointer; padding: 0;
       display: flex; align-items: center; justify-content: center;
       transition: all .12s;
       -webkit-tap-highlight-color: transparent;
     }
-    .ab:active {
-      background: var(--gdim); color: var(--g);
-      border-color: var(--g); box-shadow: 0 0 12px rgba(61,255,143,.3);
-    }
+    .ab:active { background: var(--gdim); color: var(--g); border-color: var(--g); box-shadow: 0 0 12px rgba(61,255,143,.3); }
+    .ab.y { grid-column: 2; grid-row: 1; }
+    .ab.x { grid-column: 1; grid-row: 2; }
+    .ab.a { grid-column: 3; grid-row: 2; }
+    .ab.b { grid-column: 2; grid-row: 3; }
 
-    /* ── Bottom ── */
+    /* BOTTOM STRIP */
     .device-bottom {
       display: flex; align-items: center; justify-content: space-between;
       padding: 8px 18px 14px;
-      background: var(--edge);
-      border-top: 1px solid #0b0d11;
+      background: var(--edge); border-top: 1px solid #0b0d11;
     }
     .port { font-size: 18px; color: #181c22; }
     .btm-text { font-size: 8px; letter-spacing: .1em; color: #22262f; font-family: var(--mono); }
 
-    /* ── Keyframes ── */
+    /* TOAST notif */
+    #toast {
+      position: fixed;
+      bottom: 28px; left: 50%; transform: translateX(-50%);
+      background: var(--gdim);
+      color: var(--g);
+      border: 1px solid var(--g);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      padding: 8px 18px;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+      z-index: 999;
+      white-space: nowrap;
+    }
+    #toast.show { opacity: 1; }
+
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
     @keyframes ledpulse {
       0%,100%{ opacity:.5; box-shadow:0 0 5px 2px rgba(61,255,143,.28); }
@@ -289,7 +268,7 @@
   <div class="device">
 
     <div class="device-top">
-      <div class="led"></div>
+      <div class="led" id="led"></div>
       <span class="device-brand">ALG-01</span>
       <div class="speaker-holes">
         <span></span><span></span><span></span><span></span><span></span>
@@ -298,55 +277,54 @@
 
     <div class="bezel">
       <div class="screen">
-
         <div class="scr-header">
           <span class="blink">&#9632; SCANNING</span>
           <span id="coord">LAT ---.---- / LNG ---.----</span>
         </div>
-
         <div class="radar-wrap">
           <canvas id="radar"></canvas>
           <div class="radar-label" id="radarLabel">SIGNAL LOST</div>
         </div>
-
         <div class="quote-area">
           <span class="cur">&#9612;</span>
           <p id="quote"></p>
         </div>
-
         <div class="scr-footer">
           <span>LOCATION UNKNOWN</span>
           <span id="clock">00:00:00</span>
         </div>
-
       </div>
     </div>
 
+    <!-- CONTROLS -->
     <div class="controls">
+
+      <!-- D-pad: navigasi quotes -->
       <div class="dpad">
-        <div class="dp-row"><button class="dp">&#9650;</button></div>
-        <div class="dp-row dp-mid">
-          <button class="dp">&#9664;</button>
-          <div class="dp-center"></div>
-          <button class="dp">&#9654;</button>
-        </div>
-        <div class="dp-row"><button class="dp">&#9660;</button></div>
+        <button class="dp dp-up"    id="dpUp">&#9650;</button>
+        <button class="dp dp-left"  id="dpLeft">&#9664;</button>
+        <div    class="dp dp-center"></div>
+        <button class="dp dp-right" id="dpRight">&#9654;</button>
+        <button class="dp dp-down"  id="dpDown">&#9660;</button>
       </div>
 
+      <!-- Mid -->
       <div class="mid-btns">
-        <button class="btn-sm">SELECT</button>
-        <div class="nub"></div>
-        <button class="btn-sm" id="btnStart">START</button>
+        <div class="mid-row">
+          <button class="btn-pill" id="btnSelect">SELECT</button>
+          <button class="btn-pill" id="btnStart">START</button>
+        </div>
+        <div class="nub" id="nub"></div>
       </div>
 
+      <!-- ABXY -->
       <div class="abxy">
-        <div class="ab-row"><button class="ab" id="btnY">Y</button></div>
-        <div class="ab-row ab-mid">
-          <button class="ab" id="btnX">X</button>
-          <button class="ab" id="btnA">A</button>
-        </div>
-        <div class="ab-row"><button class="ab" id="btnB">B</button></div>
+        <button class="ab y" id="btnY">Y</button>
+        <button class="ab x" id="btnX">X</button>
+        <button class="ab a" id="btnA">A</button>
+        <button class="ab b" id="btnB">B</button>
       </div>
+
     </div>
 
     <div class="device-bottom">
@@ -356,6 +334,8 @@
     </div>
 
   </div>
+
+  <div id="toast"></div>
 
   <audio id="music" src="location-unknown.mp3" loop preload="auto"></audio>
   <script src="script.js"></script>
